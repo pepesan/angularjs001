@@ -18,6 +18,15 @@
         $scope.name = "John Doe";
         $scope.text="Texto"
     });
+    app.controller('ExampleController', ['$scope', function($scope) {
+        $scope.color = {
+            name: 'blue'
+        };
+        $scope.specialValue = {
+            "id": "12345",
+            "value": "green"
+        };
+    }]);
 </script>
 
 <form name="myForm">
@@ -33,6 +42,24 @@
     {{myForm.myAddress.$valid}}
     {{myForm.myAddress.$dirty}}
     {{myForm.myAddress.$touched}}
+</form>
+
+<script>
+</script>
+<form  name="myForm2" ng-controller="ExampleController">
+    <label>
+        <input type="radio" ng-model="color.name" value="red">
+        Red
+    </label><br/>
+    <label>
+        <input type="radio" ng-model="color.name" ng-value="specialValue">
+        Green
+    </label><br/>
+    <label>
+        <input type="radio" ng-model="color.name" value="blue">
+        Blue
+    </label><br/>
+    <tt>color = {{color.name | json}}</tt><br/>
 </form>
 </body>
 </html>

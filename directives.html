@@ -62,5 +62,15 @@
         };
     });
 </script>
+
+<div ng-controller="Controlador">
+    Nombre: <input ng-model="Nombre" type="text" /> <button ng-click="saludar()">Saludar</button>
+</div>
+<script>
+    app.controller("Controlador", function ($window, $scope) {
+        $scope.Nombre = 'Mundo'; $scope.saludar = function () {
+            $window.alert('Hola ' + $scope.Nombre); };
+    });
+</script>
 </body>
 </html>

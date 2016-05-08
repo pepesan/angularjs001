@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+</head>
+<body >
+<div ng-app="myApp" ng-controller="myCtrl">
+    <select ng-model="selectedName" ng-options="item for item in names"></select>
+    <select ng-model="paisSeleccionado"
+            ng-options="pais as codigo for (codigo, pais) in paisesPorCodigo"></select>
+    <select ng-model="codigoSeleccionado"
+            ng-options="codigo as pais for (pais, codigo) in codigosPorPais"></select>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope) {
+        $scope.names = ["Emil", "Tobias", "Linus"];
+        $scope.paisesPorCodigo = { 'ES' : 'ESPAÑA',
+            'IT' : 'ITALIA',
+            'UK' : 'R.UNIDO'
+        };
+        $scope.codigosPorPais= { 'ESPAÑA': 'ES',
+            'ITALIA': 'IT',
+            'R.UNIDO':'UK' };
+    });
+</script>
+
+
+</body>
+</html>
