@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body ng-app="aplicacion" ng-controller="TituloController">
+<!-- El contenido del h2 es definido mediante un controlador--> <h2>{{titulo}}</h2>
+<input type="text" ng-model="modelo" />
+<span>{{ modelo }}</span>
+<script src="js/angular.js">
+</script>
+<script>
+    // Código para versiones Angular >= 1.3
+    angular.module("aplicacion", []) .controller("TituloController", function ($scope) {
+        var texto = "Demo inicial de controladores en AngularJS";
+        $scope.titulo = texto; });
+</script>
+</body>
+</html>
