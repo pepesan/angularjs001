@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+    <script src="js/angular-sanitize.js">
+    </script>
+</head>
+<body >
+<div class="app" ng-app="app">
+    <div ng-controller="ctrlSizing">
+        <label>Width: <input ng-model="width" type="number" placeholder="How about 300?"></label>
+        <label>Height: <input ng-model="height" type="number" placeholder="For example: 200"></label>
+
+        <div class="box" style="width: {{width}}px; height: {{height}}px; line-height: {{height}}px;">{{width}} x {{height}}</div>
+    </div>
+</div>
+<script>
+    var app=angular.module("app",[]);
+    app.controller("ctrlSizing", ["$scope", function ($scope) {
+        $scope.width = 300;
+        $scope.height = 300;
+    }]);
+</script>
+<style>
+
+    .app {
+        margin: 0 auto;
+        max-width: 200px;
+    }
+
+    input {
+        margin: 5px 0 15px 0;
+        padding: 3px 6px;
+        display: block;
+        width: 100%;
+    }
+
+    .box {
+        margin: 20px 0 0 0;
+        text-align: center;
+        background: #7edc6c;
+    }
+
+
+    /* Martin Wolf CodePen Standard */
+
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
+
+    * {
+        margin: 0;
+        padding: 0;
+    @include box-sizing(border-box);
+    }
+
+    body {
+        padding: 3em 2em;
+        font-family: 'Open Sans', Arial, sans-serif;
+        font-size: 1em;
+        line-height: 1;
+    }
+</style>
+</body>
+</html>

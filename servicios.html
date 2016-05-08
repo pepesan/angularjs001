@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="customersCtrl">
+{{myUrl}}
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('customersCtrl', function($scope, $location) {
+        $scope.myUrl = $location.absUrl();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+<div>
+    Name: <input ng-model="name">
+    <h1>You entered: {{name}}</h1>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope) {
+        $scope.name = "John Doe";
+        $scope.text="Texto"
+    });
+</script>
+
+<form name="myForm">
+    Email:
+    <input type="email" name="myAddress" ng-model="text">
+    <span ng-show="myForm.myAddress.$error.email">Not a valid e-mail address</span>
+</form>
+<h1>Otro formulario</h1>
+<form ng-app="" name="myForm">
+    Email:
+    <input type="email" name="myAddress" ng-model="text" required>
+    <h1>Status</h1>
+    {{myForm.myAddress.$valid}}
+    {{myForm.myAddress.$dirty}}
+    {{myForm.myAddress.$touched}}
+</form>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+
+</head>
+<body ng-app="myApp" ng-init="firstName='John';quantity=1;price=5;names=['Jani','Hege','Kai'];names2=[
+{name:'Jani',country:'Norway'},
+{name:'Hege',country:'Sweden'},
+{name:'Kai',country:'Denmark'}]">
+<div  w3-test-directive></div>
+
+<script>
+    var app = angular.module("myApp", []);
+
+    app.directive("w3TestDirective", function() {
+        return {
+            template : "I was made in a directive constructor!"
+        };
+    });
+</script>
+
+<div  >
+
+    <p>Name: <input type="text" ng-model="firstName"></p>
+    <p>You wrote: {{ firstName }}</p>
+
+</div>
+<div >
+
+    Quantity: <input type="number"	ng-model="quantity">
+    Costs:    <input type="number" ng-model="price">
+
+    Total in dollar: {{ quantity * price }}
+
+</div>
+<div >
+    <ul>
+        <li ng-repeat="x in names">
+            {{ x }}
+        </li>
+    </ul>
+</div>
+<div >
+
+    <ul>
+        <li ng-repeat="x	in names2">
+            {{ x.name + ', ' + x.country }}
+        </li>
+    </ul>
+
+</div>
+<div w3-test-directive2></div>
+<script>
+    app.directive("w3TestDirective2", function() {
+        return {
+            restrict : "A",
+            template : "<h1>Made by a directive!</h1>"
+        };
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+<div>
+    <h3>Use of ng-minlength, ng-maxlength and ng-required in AngularJs</h3></div>
+<form name="form">
+    User Name *
+    <input type="text" name="name" ng-model="name" ng-minlength='{{user.name.minlength}}' ng-maxlength="{{user.name.maxlength}}" ng-required='user.name.required' />
+    <span ng-show="form.name.$dirty && form.name.$error.required">Name is required!</span>
+    <span ng-show="form.name.$error.minlength">Input is too short!</span>
+    <span ng-show="form.name.$error.maxlength">Input is too long!</span>
+</form>
+
+<script>
+    var app = angular.module("myApp", []);
+    app.controller('myCtrl', function($scope) {
+        $scope.user = {
+            name: {
+                required: true,
+                minlength: 5,
+                maxlength: 25
+            }
+        }
+    });
+</script>
+</body>
+</html>

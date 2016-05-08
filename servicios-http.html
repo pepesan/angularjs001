@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="myCtrl">
+
+    <p>Today's welcome message is:</p>
+    <h1>{{content}}</h1>
+
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+        $http.get("gethttp/welcome.htm")
+                .then(function(response) {
+                    //First function handles success
+                    $scope.content = response.data;
+                }, function(response) {
+                    //Second function handles error
+                    $scope.content = "Something went wrong";
+                });
+
+    });
+</script>
+</body>
+</html>

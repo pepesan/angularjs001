@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+    <script src="js/angular-sanitize.js">
+    </script>
+</head>
+<body >
+<div ng-app="myApp" ng-bind-template="{{firstName}} {{lastName}}" ng-controller="myCtrl"></div>
+
+<script>
+    var app = angular.module("myApp", []);
+    app.controller("myCtrl", function($scope) {
+        $scope.firstName = "John";
+        $scope.lastName = "Doe";
+    });
+</script>
+</body>
+</html>
