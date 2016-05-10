@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+    <script src="js/jquery-1.12.3.js">
+    </script>
+</head>
+<body ng-app="app">
+    <h2>Directiva básica con plantilla</h2>
+    <div un-div></div>
+    <script>
+        var app=angular.module("app",[]);
+        /*
+            Tipos de directivas
+             'A' - <span ng-sparkline></span>
+             'E' - <ng-sparkline></ng-sparkline>
+             'C' - <span class="ng-sparkline"></span>
+             'M' - <!-- directive: ng-sparkline -->
+
+             Property	    Description
+             restrict	    Determines where a directive can be used (as an element, attribute,
+                            CSS class, or comment).
+             scope	        Used to create a new child scope or an isolate scope.
+             template	    Defines the content that should be output from the directive.
+                            Can include HTML, data binding expressions, and even other directives.
+             templateUrl	Provides the path to the template that should be used by the directive.
+                            It can optionally contain a DOM element id when templates are defined
+                            in <script> tags.
+             controller	    Used to define the controller that will be associated with the directive
+                            template.
+             link	        Function used for DOM manipulation tasks.
+         */
+        app.directive('unDiv', function() {
+            return {
+                restrict: 'A',
+                template: '<div class="unaclase">Hola Soy el Contenido</div>'
+            }
+        });
+    </script>
+    <h2>Directiva básica con plantilla cargada vía AJAX</h2>
+    <div un-div-ajax></div>
+    <script>
+        app.directive('unDivAjax', function() {
+            return {
+                restrict: 'A',
+                templateUrl: 'custom-directive-template.html'
+            }
+        });
+    </script>
+    <h2>Directiva de Etiqueta con plantilla que substituye</h2>
+    <un-div-completo></un-div-completo>
+    <script>
+        app.directive('unDivCompleto', function() {
+            return {
+                restrict: 'E',
+                template: '<div>He sacado un div completo de una etiqueta propia</div>',
+                replace:true,
+
+            }
+        });
+    </script>
+    <h2>Directiva de Etiqueta con plantilla que no substituye</h2>
+    <otro-div-completo></otro-div-completo>
+    <script>
+        app.directive('otroDivCompleto', function() {
+            return {
+                restrict: 'E',
+                template: '<div>He sacado otro div completo de una etiqueta propia</div>',
+                replace:false,
+
+            }
+        });
+    </script>
+    <h2>Directiva de Etiqueta con eventos asociados</h2>
+    <con-eventos></con-eventos>
+    <script>
+        app.directive('conEventos', function() {
+            return {
+                restrict: 'E',
+                template: '<div>Este es un div con eventos asociados. Si me' +
+                ' haces click cambio mi contenido. Si entras con el ratón ' +
+                'cambio de color. Si sales con el ratón cuelvo a tener fondo blanco</div>',
+                replace:true,
+                link: function ($scope, element, attrs) {
+                    element.bind('click', function () {
+                        element.html('You clicked me!');
+                    });
+                    element.bind('mouseenter', function () {
+                        element.css('background-color', 'yellow');
+                    });
+                    element.bind('mouseleave', function () {
+                        element.css('background-color', 'white');
+                    });
+                }
+            }
+        });
+
+    </script>
+    <h2>Directiva de Etiqueta con scope compartido</h2>
+    <div ng-controller="unControlador">
+        <con-scope-compartido></con-scope-compartido>
+    </div>
+    <script>
+        app.controller("unControlador",function($scope){
+            $scope.variable="valorVariableControlador";
+        });
+        app.directive('conScopeCompartido', function() {
+            return {
+                restrict: 'E',
+                template: '<div>Esta es una variable del scope del controlador del módulo: {{variable}}</div>',
+                replace:true,
+                scope:true
+            }
+        });
+
+    </script>
+    <h2>Directiva de Etiqueta con scope propio</h2>
+    <con-scope-propio ng-parametro="normal"></con-scope-propio>
+
+    <script>
+        app.directive('conScopePropio', function() {
+            return {
+                restrict: 'E',
+                scope:{
+                    //copia el valor del atributo clase al scope, model unidireccional
+                    ngParametro:"@"
+                },
+                template: '<div class="{{ngParametro}}">Esta es una variable del scope del propio: {{variable}}</div>',
+                replace:true,
+
+                controller:function($scope){
+                    $scope.variable="ValorSóloScopeDirectiva";
+                },
+                link: function ($scope, element, attrs) {
+                    /*element.bind('click', function () {
+                     element.html('You clicked me!');
+                     });
+                     element.bind('mouseenter', function () {
+                     element.css('background-color', 'yellow');
+                     });
+                     element.bind('mouseleave', function () {
+                     element.css('background-color', 'white');
+                     });
+                     */
+                }
+            }
+        });
+
+    </script>
+    <h2>Directiva de Etiqueta con transposición</h2>
+    <copia-dentro>Este texto irá dentro de la directiva</copia-dentro>
+
+    <script>
+
+        app.directive('copiaDentro', function() {
+            var directive = {};
+
+            directive.restrict = 'E'; /* restrict this directive to elements */
+            directive.transclude = true;
+            directive.replace=true;
+            directive.template = "<div ng-transclude></div>";
+
+            return directive;
+        });
+    </script>
+    <h2>Validaciones de campos personalizadas</h2>
+    <div ng-controller="HomeCtrl">
+        <form novalidate name="myForm">
+            Number: <input type="text" name="valText" ng-model="val" even-number />
+        </form>
+        <div>
+            <span style="color: red;" ng-show="myForm.valText.$error.evenNumber">Invalid value</span>
+            <br />
+            <br />
+            <button ng-click="setValue(22)">Change Value to 22</button>
+            <br />
+            <button ng-click="setValue(19)">Change Value to 19</button>
+        </div>
+    </div>
+    <script>
+        app.controller('HomeCtrl', function($scope){
+            $scope.val=20;
+
+            $scope.setValue = function(val){
+                $scope.val=val;
+            };
+        });
+
+        app.directive('evenNumber', function(){
+            return{
+                require:'ngModel',
+                link: function(scope, elem, attrs, ctrl){
+                    ctrl.$parsers.unshift(checkForEven);
+                    ctrl.$formatters.unshift(checkForEven);
+
+                    function checkForEven(viewValue){
+                        if (parseInt(viewValue)%2 === 0) {
+                            ctrl.$setValidity('evenNumber',true);
+                        }
+                        else{
+                            ctrl.$setValidity('evenNumber', false);
+                        }
+                        return viewValue;
+                    }
+                }
+            };
+
+        });
+    </script>
+
+    <h2>Directiva de Atributo con formatter</h2>
+    <div ng-controller="Ctrl" class="container">
+
+        <p>
+            <label for="date">Standard format</label>
+            <input id="date" type="text" date='dd-MM-yyyy' ng-model="secondDate" class="form-control" />
+        <p class="text-danger">
+            {{secondDate}}
+        </p>
+    </div>
+    <script>
+        app.controller('Ctrl', function($scope){
+            $scope.firstDate = new Date();
+            $scope.secondDate = "2014-02-20";
+        });
+
+
+        // Here is where the magic works
+        app.directive('date', function (dateFilter) {
+                    return {
+                        require:'ngModel',
+                        link:function (scope, elm, attrs, ctrl) {
+
+                            var dateFormat = attrs['date'] || 'yyyy-MM-dd';
+
+                            ctrl.$formatters.unshift(function (modelValue) {
+                                return dateFilter(modelValue, dateFormat);
+                            });
+                        }
+                    };
+                });
+
+
+    </script>
+    <h2>Directiva de Etiqueta con copia de un modelo para usar internamente</h2>
+    <input type="text" ng-model="ciudad" placeholder="Mete una ciudad" />
+    <div un-div-con-modelo ng-model="ciudad" ></div>
+
+    <script>
+        app.directive('unDivConModelo', function() {
+            return {
+                restrict: 'A',
+                /*
+                 ^ -- Look for the controller on parent elements, not just on the local scope
+                 ? -- Don't raise an error if the controller isn't found
+                 */
+                require:'^ngModel',
+                //poniendo scope a true crea su propio scope restringido a la directiva
+                scope:{
+                    //copia el valor del atributo clase al scope, model bidireccional
+                    ngModel:"="
+                },
+                template: '<div>ngModel: {{ngModel}}<br/>miValor: {{miValor}}</div>',
+                controller: ['$scope',  function($scope) {
+                    $scope.miValor=0;
+                }],
+                link:function(scope, element,attributes,controller){
+
+                    controller.$formatters.push(
+                            function(modelValue){
+                                return modelValue;
+                            }
+                    );
+                    controller.$render = function() {
+                        scope.miValor=controller.$viewValue;
+                    };
+                    controller.$parsers.push(
+                            function(viewValue){
+                                return viewValue+"!";
+                            }
+                    );
+
+                }
+            }
+        });
+    </script>
+</body>
+</html>

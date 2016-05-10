@@ -8,7 +8,8 @@
 </head>
 <body >
 <div ng-app="myApp" ng-controller="myCtrl">
-    <select ng-model="selectedName" ng-options="item for item in names"></select>
+    <select ng-model="selectedName"
+            ng-options="item for item in names"></select>
     <select ng-model="paisSeleccionado"
             ng-options="pais as codigo for (codigo, pais) in paisesPorCodigo"></select>
     <select ng-model="codigoSeleccionado"
