@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background: #ebebed;
+            font-family: 'Open Sans';
+        }
+        div.container {
+            background: #fff;
+            border-radius: 8px;
+            margin: 4em auto;
+            max-width: 400px;
+            padding: 2em;
+        }
+        h1 {
+            color: #474e54;
+            font-size: 24px;
+            margin: 0 0 .4em;
+        }
+        h2 {
+            color: #4f585f;
+            font-size: 18px;
+        }
+        label {
+            color: #919191;
+            line-height: 2em;
+            padding: 0 0 .4em 0;
+        }
+
+        div.results {
+            border-radius: 6px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 1em;
+            padding: 1em;
+            text-align: center;
+        }
+    </style>
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+</head>
+<body >
+<div ng-app="RadifyExample"
+     ng-controller="ColourPickerController"
+     class="container">
+    <h1>Colours</h1>
+    <label>
+        <h2>Foreground</h2>
+        <colour-picker ng-model="foreground"></colour-picker>
+    </label>
+    <label>
+        <h2>Background</h2>
+        <colour-picker ng-model="background"></colour-picker>
+    </label>
+
+    <div ng-style="{'background' : background, 'color' : foreground }" class="results">
+        Results
+    </div>
+</div>
+<script>
+    angular.module('RadifyExample', [])
+            .controller('ColourPickerController', function($scope) {
+                $scope.background = 'F00';
+                $scope.foreground = '000';
+            })
+            .directive('colourPicker', function() {
+                var tpl = "<div> \
+                     R <select ng-model='red'> \
+                         <option value='F'>Lots</option> \
+                         <option value='A'>Some</option> \
+                         <option value='0'>None</option> \
+                     </select> \
+                     G <select ng-model='green'> \
+                         <option value='F'>Lots</option> \
+                         <option value='A'>Some</option> \
+                         <option value='0'>None</option> \
+                     </select> \
+                     B <select ng-model='blue'> \
+                         <option value='F'>Lots</option> \
+                         <option value='A'>Some</option> \
+                         <option value='0'>None</option> \
+                     </select> \
+                 </div>";
+
+                return {
+                    restrict: 'E',
+                    template: tpl,
+                    scope: {},
+                    require: 'ngModel',
+                    link: function(scope, iElement, iAttrs, ngModelCtrl) {
+                        ngModelCtrl.$formatters.push(function(modelValue) {
+                            var colours = modelValue.split('');
+                            return {
+                                red: colours[0],
+                                green: colours[1],
+                                blue: colours[2]
+                            };
+                        });
+
+                        ngModelCtrl.$render = function() {
+                            scope.red   = ngModelCtrl.$viewValue.red;
+                            scope.green = ngModelCtrl.$viewValue.green;
+                            scope.blue  = ngModelCtrl.$viewValue.blue;
+                        };
+
+                        scope.$watch('red + green + blue', function() {
+                            ngModelCtrl.$setViewValue({
+                                red: scope.red,
+                                green: scope.green,
+                                blue: scope.blue
+                            });
+                        });
+
+                        ngModelCtrl.$parsers.push(function(viewValue) {
+                            return '#' + [viewValue.red, viewValue.green, viewValue.blue].join('');
+                        });
+                    }
+                };
+            });
+</script>
+</body>
+</html>
