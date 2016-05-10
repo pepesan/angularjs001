@@ -11,9 +11,9 @@
     <script src="js/angular.min.js"></script>
     <script src="js/angular-route.js"></script>
 </head>
-<body>
+<body ng-app = "mainApp">
 <h2>AngularJS Sample Application</h2>
-<div ng-app = "mainApp">
+<div >
     <p><a href = "#addStudent">Add Student</a></p>
     <p><a href = "#viewStudents">View Students</a></p>
     <div ng-view></div>
@@ -31,23 +31,26 @@
 
 <script>
     var mainApp = angular.module("mainApp", ['ngRoute']);
-    mainApp.config(['$routeProvider', function($routeProvider) {
-        $routeProvider.
+    mainApp.config([
+        '$routeProvider',
+        function($routeProvider) {
+            $routeProvider.
 
-        when('/addStudent', {
-            templateUrl: 'addStudent.htm',
-            controller: 'AddStudentController'
-        }).
+            when('/addStudent', {
+                templateUrl: 'addStudent.htm',
+                controller: 'AddStudentController'
+            }).
 
-        when('/viewStudents', {
-            templateUrl: 'viewStudents.htm',
-            controller: 'ViewStudentsController'
-        }).
+            when('/viewStudents', {
+                templateUrl: 'viewStudents.htm',
+                controller: 'ViewStudentsController'
+            }).
 
-        otherwise({
-            redirectTo: '/addStudent'
-        });
-    }]);
+            otherwise({
+                redirectTo: '/addStudent'
+            });
+        }
+    ]);
 
     mainApp.controller('AddStudentController', function($scope) {
         $scope.message = "This page will be used to display add student form";

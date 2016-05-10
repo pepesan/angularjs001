@@ -27,17 +27,19 @@
         return factory;
     });
 
-    mainApp.service('CalcService', function(MathService){
+    mainApp.service('$calc', function(MathService){
         this.square = function(a) {
             return MathService.multiply(a,a);
         }
     });
 
-    mainApp.controller('CalcController', function($scope, CalcService) {
-        $scope.square = function() {
-            $scope.result = CalcService.square($scope.number);
-        }
-    });
+    mainApp.controller('CalcController',
+            function($scope, $calc) {
+                    $scope.square = function() {
+                    $scope.result = $calc.square($scope.number);
+                }
+            }
+    );
 </script>
 
 </body>

@@ -16,17 +16,20 @@
 
 <script>
     var app = angular.module('myApp', []);
-    app.controller('myCtrl', function($scope, $http) {
-        $http.get("gethttp/welcome.htm")
-                .then(function(response) {
-                    //First function handles success
-                    $scope.content = response.data;
-                }, function(response) {
-                    //Second function handles error
-                    $scope.content = "Something went wrong";
-                });
+    app.controller('myCtrl',
+            function($scope, $http) {
+                $scope.content="Cargando";
+                $http.get("gethttp/welcome.htm")
+                        .then(function(response) {
+                            //First function handles success
+                            $scope.content = response.data;
+                        }, function(response) {
+                            //Second function handles error
+                            $scope.content = "Something went wrong";
+                        });
 
-    });
+            }
+    );
 </script>
 </body>
 </html>
