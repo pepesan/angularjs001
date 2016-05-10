@@ -245,6 +245,32 @@
 
 
     </script>
+
+
+    <h2>Directiva de validación de formulario usando un parser</h2>
+    <form name="myForm">
+        <input name="myInput" ng-model="myInput" required my-directive>
+    </form>
+    <p>The input's valid state is:</p>
+    <h1>{{myForm.myInput.$valid}}</h1>
+    <script>
+        app.directive('myDirective', function() {
+            return {
+                require: 'ngModel',
+                link: function(scope, element, attr, mCtrl) {
+                    function myValidation(value) {
+                        if (value.indexOf("e") > -1) {
+                            mCtrl.$setValidity('charE', true);
+                        } else {
+                            mCtrl.$setValidity('charE', false);
+                        }
+                        return value;
+                    }
+                    mCtrl.$parsers.push(myValidation);
+                }
+            };
+        });
+    </script>
     <h2>Directiva de Etiqueta con copia de un modelo para usar internamente</h2>
     <input type="text" ng-model="ciudad" placeholder="Mete una ciudad" />
     <div un-div-con-modelo ng-model="ciudad" ></div>
