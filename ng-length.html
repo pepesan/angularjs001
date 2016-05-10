@@ -11,10 +11,25 @@
     <h3>Use of ng-minlength, ng-maxlength and ng-required in AngularJs</h3></div>
 <form name="form">
     User Name *
-    <input type="text" name="name" ng-model="name" ng-minlength='{{user.name.minlength}}' ng-maxlength="{{user.name.maxlength}}" ng-required='user.name.required' />
-    <span ng-show="form.name.$dirty && form.name.$error.required">Name is required!</span>
-    <span ng-show="form.name.$error.minlength">Input is too short!</span>
-    <span ng-show="form.name.$error.maxlength">Input is too long!</span>
+    <input type="text" name="name" ng-model="name"
+           ng-minlength='{{user.name.minlength}}'
+           ng-maxlength="{{user.name.maxlength}}"
+           ng-required='user.name.required' />
+    <span ng-show="form.name.$dirty && form.name.$error.required">
+        Name is required!</span>
+    <span ng-show="form.name.$error.minlength">
+        Input is too short!</span>
+    <span ng-show="form.name.$error.maxlength">
+        Input is too long!</span><br/>
+    Email
+    <input type="email" name="email" ng-model="email"
+           ng-required='user.email.required' />
+    <span ng-show="form.email.$dirty && form.email.$error.required">
+        Email is required!</span>
+    <!--span ng-show="form.email.$error.minlength">
+        Input is too short!</span>
+    <span ng-show="form.email.$error.maxlength">
+        Input is too long!</span-->
 </form>
 
 <script>
@@ -25,6 +40,9 @@
                 required: true,
                 minlength: 5,
                 maxlength: 25
+            },
+            email: {
+                required: true,
             }
         }
     });
