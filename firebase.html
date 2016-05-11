@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+    <script src="js/firebase.js">
+    </script>
+    <script src="js/angularfire.min.js">
+    </script>
+    <script src="js/jquery-1.12.3.js">
+    </script>
+</head>
+<body ng-app="">
+<div id='messagesDiv'></div>
+<input type='text' id='nameInput' placeholder='Name'>
+<input type='text' id='messageInput' placeholder='Message'>
+<script>
+    var myDataRef = new Firebase('https://p7c04aodku8.firebaseio-demo.com/');
+    $('#messageInput').keypress(function (e) {
+        if (e.keyCode == 13) {
+            var name = $('#nameInput').val();
+            var text = $('#messageInput').val();
+            myDataRef.push({name: name, text: text});
+            $('#messageInput').val('');
+        }
+    });
+    myDataRef.on('child_added', function(snapshot) {
+        var message = snapshot.val();
+        displayChatMessage(message.name, message.text);
+    });
+    function displayChatMessage(name, text) {
+        $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+    };
+</script>
+</body>
+</html>

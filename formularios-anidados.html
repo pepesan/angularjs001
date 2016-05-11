@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+</head>
+<body ng-app="">
+<!--Plantilla para ng-include-->
+<script type="text/ng-template" id="frmContraseña">
+    <ng-form name="frmContraseña">
+        <div ng-show="usuario.password != usuario.password2">
+            Las contraseñas no coinciden
+        </div>
+        <label>Contraseña</label>
+        <input ng-model="usuario.password" type="password" required>
+        <label>Confirmar contraseña</label>
+        <input ng-model="usuario.password2" type="password" required>
+    </ng-form>
+</script>
+<form name="form1" novalidate>
+    <label>Datos de autenticación</label><br/>
+    <label>Nombre</label>
+    <input ng-model="usuario.nombre" required>
+    <ng-include src="'frmContraseña'" />
+</form>
+<script>
+
+</script>
+</body>
+</html>
