@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+</head>
+<body ng-app="myapp">
+    <div ng-controller="DIController">
+    <div ng-controller="MyController"></div>
+<script>
+    var myapp = angular.module("myapp", []);
+    myapp.controller("MyController", function($scope, $timeout){
+
+        $timeout(callAtTimeout2, 3000);
+
+    });
+
+    function callAtTimeout2() {
+        console.log("Timeout occurred");
+    }
+    myapp.controller("DIController", function($scope, $interval){
+
+        $scope.callAtInterval = function() {
+            console.log("$scope.callAtInterval - Interval occurred");
+        }
+
+        $interval( function(){ $scope.callAtInterval(); }, 3000);
+    });
+</script>
+</body>
+</html>
