@@ -114,7 +114,8 @@
         app.directive('conScopeCompartido', function() {
             return {
                 restrict: 'E',
-                template: '<div>Esta es una variable del scope del controlador del módulo: {{variable}}</div>',
+                template: '<div>Esta es una variable del scope del ' +
+                'controlador del módulo: {{variable}}</div>',
                 replace:true,
                 scope:true
             }
@@ -129,10 +130,12 @@
             return {
                 restrict: 'E',
                 scope:{
-                    //copia el valor del atributo clase al scope, model unidireccional
+                    //copia el valor del atributo clase al scope,
+                    // model unidireccional
                     ngParametro:"@"
                 },
-                template: '<div class="{{ngParametro}}">Esta es una variable del scope del propio: {{variable}}</div>',
+                template: '<div class="{{ngParametro}}">Esta es una variable ' +
+                'del scope del propio: {{variable}}</div>',
                 replace:true,
 
                 controller:function($scope){
