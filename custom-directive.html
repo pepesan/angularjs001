@@ -30,7 +30,8 @@
              scope	        Used to create a new child scope or an isolate scope.
              template	    Defines the content that should be output from the directive.
                             Can include HTML, data binding expressions, and even other directives.
-             templateUrl	Provides the path to the template that should be used by the directive.
+             templateUrl	Provides
+              the path to the template that should be used by the directive.
                             It can optionally contain a DOM element id when templates are defined
                             in <script> tags.
              controller	    Used to define the controller that will be associated with the directive
@@ -132,7 +133,7 @@
                 scope:{
                     //copia el valor del atributo clase al scope,
                     // model unidireccional
-                    ngParametro:"@"
+                    ngParametro:"@",
                 },
                 template: '<div class="{{ngParametro}}">Esta es una variable ' +
                 'del scope del propio: {{variable}}</div>',
@@ -158,7 +159,7 @@
 
     </script>
     <h2>Directiva de Etiqueta con transposición</h2>
-    <copia-dentro>Este texto irá dentro de la directiva</copia-dentro>
+    <copia-dentro><p>Este texto irá dentro de la directiva</p></copia-dentro>
 
     <script>
 
@@ -179,7 +180,8 @@
             Number: <input type="text" name="valText" ng-model="val" even-number />
         </form>
         <div>
-            <span style="color: red;" ng-show="myForm.valText.$error.evenNumber">Invalid value</span>
+            <span style="color: red;" ng-show="myForm.valText.$error.evenNumber">
+                Invalid value</span>
             <br />
             <br />
             <button ng-click="setValue(22)">Change Value to 22</button>

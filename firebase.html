@@ -12,28 +12,52 @@
     <script src="js/jquery-1.12.3.js">
     </script>
 </head>
-<body ng-app="">
-<div id='messagesDiv'></div>
-<input type='text' id='nameInput' placeholder='Name'>
-<input type='text' id='messageInput' placeholder='Message'>
+<body ng-app="app">
+<div ng-controller="myController">
+    <input type='text' id='nameInput' placeholder='Name'>
+    <input type='text' id='messageInput' placeholder='Message'>
+    <button id="addButton" ng-click="addData()">Add</button>
+    <button id="removeLastButton" ng-click="removeLast()">Remove Last</button>
+    <div id='messagesDiv'></div>
+
+</div>
 <script>
-    var myDataRef = new Firebase('https://p7c04aodku8.firebaseio-demo.com/');
-    $('#messageInput').keypress(function (e) {
-        if (e.keyCode == 13) {
+    var app=angular.module("app",["firebase"]);
+    app.controller("myController",function ($scope,$firebaseArray) {
+        $scope.myDataRef = new Firebase('https://blistering-torch-1023.firebaseio.com/');
+        $scope.refList=$firebaseArray($scope.myDataRef);
+        $scope.addData=function(){
             var name = $('#nameInput').val();
             var text = $('#messageInput').val();
-            myDataRef.push({name: name, text: text});
+            $scope.myDataRef.push({name: name, text: text});
             $('#messageInput').val('');
-        }
-    });
-    myDataRef.on('child_added', function(snapshot) {
-        var message = snapshot.val();
-        displayChatMessage(message.name, message.text);
-    });
-    function displayChatMessage(name, text) {
-        $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
-        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
-    };
+            $('#nameInput').val("");
+            $('#nameInput').focus();
+        };
+        $('#messageInput').keypress(function (e) {
+            if (e.keyCode == 13) {
+                $scope.addData();
+            }
+        });
+        $scope.removeLast=function(){
+            var size=$scope.refList.length;
+            var item=$scope.refList[size-1];
+            $scope.refList.$remove(item);
+            $("#messagesDiv div:last").remove();
+        };
+        $scope.myDataRef.on('child_added', function(snapshot) {
+            var message = snapshot.val();
+            $scope.displayChatMessage(message.name, message.text);
+        });
+        $scope.displayChatMessage=function (name, text) {
+            $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+            $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+        };
+    })
+
+
+
+
 </script>
 </body>
 </html>
