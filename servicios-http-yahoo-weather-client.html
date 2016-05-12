@@ -5,11 +5,14 @@
     <title>Title</title>
     <script src="js/angular.js">
     </script>
+    <script src="js/jquery-1.12.3.js">
+    </script>
 </head>
 <body ng-app="app">
 <div ng-controller="miControl">
     <button ng-click="obtenerClima()">Obtener Clima</button>
-    {{clima.code}}{{clima.date}}{{clima.temp}}{{clima.text}}
+    <div id="actual">{{clima.code}}{{clima.date}}{{clima.temp}}{{clima.text}}</div>
+    <div id="previsiones"></div>
 </div>
 <script>
 var app=angular.module("app",[]);
@@ -18,8 +21,24 @@ app.controller("miControl",function ($scope,$http) {
         var url="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22Madrid%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
         $http.get(url)
                 .then(function(res){
-                    $scope.clima=res.data.query.results.channel.item.condition;
-                    console.log(res.data.query.results.channel.item);
+                    console.log(res);
+                    if(res.status!=200){
+                        $scope.clima="No hay datos disponibles!";
+                    }else{
+                        $scope.clima=res.data.query.results.channel.item.condition;
+                        $scope.previsiones=res.data.query.results.channel.item.forecast;
+                        console.log(res.data.query.results.channel.item);
+                        for(var i=0;i<$scope.previsiones.length;i++){
+                            var prevision=$scope.previsiones[i];
+                            console.log(prevision);
+
+                            $("#previsiones").append("<div id='prevision-"+i+"'>" +
+                                    "Día: " +prevision.date+
+                                    " Min: " +prevision.low+" Max: "+prevision.high+
+                                    "</div>");
+                        }
+                    }
+
                 });
 
     };

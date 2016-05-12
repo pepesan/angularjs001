@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+    <script src="js/jquery-1.12.3.js">
+    </script>
+</head>
+<body ng-app="app">
+<h4>Paso de parámetros</h4>
+<div mis-opciones mi-tipo="pass"></div>
+<script>
+    angular.module("app",[])
+            .directive("misOpciones",function () {
+        return {
+            restrict:"AC",
+            scope:{
+                miTipo:"@",
+            },
+            controller:function($scope){
+                $scope.salida="Algo";
+            },
+            template:"<div>{{salida}}</div>",
+            link: function(scope,elem, attr){
+                if(scope.miTipo=="pass"){
+                    scope.salida="" +
+                            "<label for='password'>Password</label>" +
+                            "<input type='password' " +
+                            "name='password' id='password' required" +
+                            "/>";
+                    $(elem).html(scope.salida);
+                }
+
+            },
+
+        }
+
+    });
+</script>
+</body>
+</html>

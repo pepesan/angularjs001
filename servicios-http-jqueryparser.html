@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+    <script src="js/jquery-1.12.3.js">
+    </script>
+</head>
+<body ng-app="app">
+<div ng-controller="miControl">
+    <button ng-click="obtenerURL()">Hacer Petición</button>
+    <div id="actual">{{clima.code}}{{clima.date}}{{clima.temp}}{{clima.text}}</div>
+    <div id="previsiones"></div>
+</div>
+<script>
+var app=angular.module("app",[]);
+app.controller("miControl",function ($scope,$http) {
+    $scope.obtenerURL=function(){
+        var url="servicios-http-jqueryparser-petition.html";
+        $http.get(url)
+                .then(function(res){
+                    console.log($(res.data));
+
+
+                });
+
+    };
+
+});
+</script>
+</body>
+</html>

@@ -258,7 +258,8 @@
 
     <h2>Directiva de validación de formulario usando un parser</h2>
     <form name="myForm">
-        <input name="myInput" ng-model="myInput" required my-directive>
+        <input name="myInput" ng-model="myInput"
+               required my-directive>
     </form>
     <p>The input's valid state is:</p>
     <h1>{{myForm.myInput.$valid}}</h1>
@@ -281,7 +282,7 @@
         });
     </script>
     <h2>Ejemplo validación completa de formulario</h2>
-    <div class="container" ng-controller="mainController">
+    <mis-opciones class="container" ng-controller="mainController">
         <div class="row">
 
             <div class="col-sm-6">
@@ -290,7 +291,8 @@
                 <form name="userForm" ng-submit="submitForm()" novalidate>
 
                     <!-- NAME -->
-                    <div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
+                    <div class="form-group"
+                         ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
                         <label>Name</label>
                         <input type="text" name="name" class="form-control" ng-model="user.name" required>
                         <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">You name is required.</p>
@@ -453,5 +455,8 @@
             }
         });
     </script>
+
+
+
 </body>
 </html>
