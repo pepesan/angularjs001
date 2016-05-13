@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.js">
+    </script>
+    <script src="js/firebase.js">
+    </script>
+    <script src="js/angularfire.min.js">
+    </script>
+    <script src="js/jquery-1.12.3.js">
+    </script>
+    <!-- load bootstrap and fontawesome via CDN -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+
+    <script src="js/angular-route.js"></script>
+</head>
+<body ng-app="app">
+<div >
+   <div ng-controller="AddProposalController">
+            <input type='text' id='nameInput' placeholder='Name'>
+            <input type='text' id="titleInput" placeholder='Title'>
+            <input type='text' id="summaryInput" placeholder='Summary'>
+            <input type='text' id="tagsInput" placeholder='taxes,regional,social'>
+            <textarea id="textInput" placeholder='Text'></textarea>
+            <button id="addButton" ng-click="addData()">Add</button>
+            <button id="recorreListadoButton" ng-click="recorreListado()">Recorrer</button>
+            <div id='messagesDiv'>
+
+            </div>
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                <tr>
+                    <td>
+                        <a href="#" ng-click="sortType = 'title'; sortReverse = !sortReverse">
+                            Title
+                            <span ng-show="sortType == 'title' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'title' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'summary'; sortReverse = !sortReverse">
+                            Summary
+                            <span ng-show="sortType == 'summary' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'summary' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+
+                    <td>
+                        <a href="#" ng-click="sortType = 'votes'; sortReverse = !sortReverse">
+                            Votes
+                            <span ng-show="sortType == 'votes' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'votes' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        Acciones
+                    </td>
+                </tr>
+                </thead>
+            <tbody>
+            <tr ng-repeat="roll in sushi | orderBy:sortType:sortReverse | filter:searchProposal">
+            <div id='messagesDivOrdenados'>
+                <tr ng-repeat="proposal in refList | orderBy:sortType:sortReverse | filter:searchProposal">
+                    <td>{{ proposal.title }}</td>
+                    <td>{{ proposal.summary }}</td>
+                    <td>{{ proposal.votes}}</td>
+                    <td><button id="{{ proposal.$id}}" ng-click="votarPropuesta()">Votar</button></td>
+                </tr>
+            </tbody>
+            </table>
+            </div>
+
+    </div>
+</div>
+<script>
+    var app=angular.module("app",["firebase","ngRoute"]);
+    app.controller("AddProposalController",function ($scope,$firebaseArray) {
+        $scope.myDataRef = new Firebase('https://blistering-torch-1023.firebaseio.com/');
+        $scope.refList=$firebaseArray($scope.myDataRef);
+        $scope.sortType     = 'votes';
+        $scope.sortReverse  = false;  // set the default sort order
+        $scope.searchProposal   = '';
+        $scope.dibujaDatos=function(){
+            for (var i=0;i<$scope.refList.length;i++){
+                var propuesta=$scope.refList[i];
+                console.log(propuesta);
+                $scope.displayChatMessage("#messagesDiv",propuesta);
+            }
+        };
+        //$scope.dibujaDatos();
+        $scope.addData=function(){
+            var name = $('#nameInput').val();
+            var title = $('#titleInput').val();
+            var summary = $('#summaryInput').val();
+            var tags = $('#tagsInput').val();
+            tags=tags.split(",");
+            /*
+             for(var i=0;i<tags.length;i++){
+             tags[i]=tags[i].replace(" ", "");
+             }
+             */
+            var id=$scope.calculaId(title,name);
+            var text = $('#textInput').val();
+            $scope.myDataRef.push(
+                    {
+                        name: name,
+                        title:title,
+                        summary:summary,
+                        tags:tags,
+                        text: text,
+                        votes:1,
+                        id:id,
+                        votes_persons:[{name:name}]
+                    }
+            );
+            localStorage.setItem("username", name);
+            $scope.cleanForm();
+        };
+        $scope.calculaId=function(title,name){
+            var id=title.replace(/ /g,'')+"-" +
+                    name.replace(/ /g,'');
+            return id;
+        };
+        $scope.cleanForm=function(){
+            $(':input').val('');
+            $('#nameInput').focus();
+        }
+        $('#messageInput').keypress(function (e) {
+            if (e.keyCode == 13) {
+                $scope.addData();
+                $scope.cleanForm();
+            }
+        });
+
+        $scope.myDataRef.on('child_added', function(snapshot) {
+            var proposal = snapshot.val();
+            console.log(snapshot.val());
+            //$scope.displayChatMessage("messagesDiv",proposal);
+        });
+
+        $scope.generateProposalHTML=function(proposal){
+            console.log(proposal);
+            var html="<div class='proposal'><h1>"+proposal.title+"</h1>" +
+                    "<h2>"+proposal.summary+"</h2>" +
+                    "<p>"+proposal.text+"</p>" +
+                    "<div>";
+
+            for (var i=0;i<proposal.tags.length;i++){
+                html+="<div class='tag'>"+proposal.tags[i]+"</div>"
+            }
+            html +=
+                    "</div>"+"<h5>Votos "+
+                    proposal.votes+
+                    "</h5>" +
+                    "<button id='"+proposal.id+"'" +
+                    " ng-click='votarPropuesta()'>Votar</button>" +
+                    "</div>";
+            return html;
+        };
+        $scope.votarPropuesta=function(evento){
+            var id=event.currentTarget.id;
+            console.log(id);
+            var username=localStorage.getItem("username");
+            console.log(username);
+            for (var i=0;i<$scope.refList.length;i++){
+                var propuesta=$scope.refList[i];
+                console.log(propuesta);
+                if(id==propuesta.id && (username!=propuesta.name || username==undefined)){
+
+                    //var propuestaRef=$scope.myDataRef.child(propuesta);
+                    //console.log(propuestaRef);
+                    var propuestaRef=new Firebase("https://blistering-torch-1023.firebaseio.com/"+
+                            propuesta.$id);
+                    var propuestaRefVotesPersons=new Firebase("https://blistering-torch-1023.firebaseio.com/"+
+                            propuesta.$id+"/votes_persons");
+                    propuesta.votes=parseInt(propuesta.votes);
+                    propuesta.votes++;
+                    propuestaRef.update({votes:propuesta.votes});
+                    var listadoVotos=$firebaseArray(propuestaRefVotesPersons);
+
+                    //$scope.myDataRef.;
+                    console.log(listadoVotos);
+                    var presente=false;
+                    for(var i =0;i<listadoVotos;i++){
+                        console.log(listadoVotos[i]);
+                        if(listadoVotos[i].name==username){
+                            presente=true;
+                        }
+                    }
+                    if(presente==false){
+                        propuestaRefVotesPersons.push({name:username});
+                    }else{
+                        console.log("ya has votado antes");
+                    }
+                }else{
+                    console.log("eres el mismo usuario, no se puede");
+                }
+            }
+            //if(username!=undefined && username!=)
+        }
+        $scope.displayChatMessage=function (id,proposal) {
+            console.log(proposal);
+            var html=$scope.generateProposalHTML(proposal);
+            $("#"+id).append(html);
+            $("#"+proposal.id).click($scope.votarPropuesta);
+            $("#"+id)[0].scrollTop = $("#"+id)[0].scrollHeight;
+        };
+        $scope.recorreListado=function(){
+            for (var i=0;i<$scope.refList.length;i++){
+                console.log($scope.refList[i]);
+            }
+        };
+    });
+
+
+
+</script>
+</body>
+</html>
