@@ -18,7 +18,9 @@
 <a href="#green">Green</a>
 <a href="#blue">Blue</a>
 
-<div ng-view></div>
+<div ng-view>
+
+</div>
 
 <script>
     var app = angular.module("myApp", ["ngRoute"]);
@@ -35,6 +37,8 @@
             })
             .when("/blue", {
                 template : "<h1>Blue</h1>"
+            }).otherwise({
+                redirectTo: '/'
             });
     });
 </script>

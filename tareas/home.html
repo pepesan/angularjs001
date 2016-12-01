@@ -1,0 +1,90 @@
+
+
+
+<div class="container">
+    <div class="row">
+
+        <h1 class="text-center">Tareas</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12" >
+            <div class="row">
+                <div class="col-md-12">
+                    <form ng-submit="submit()">
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" ng-model="tarea.name" required minlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="empleado">Empleado</label>
+                            <input type="text" class="form-control" id="empleado" ng-model="tarea.employee"  required minlength="4">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="init_date">Hora Inicio:</label>
+                                    <div id="init_date" uib-timepicker ng-model="tarea.init_date" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="end_date">Hora Fin:</label>
+                                    <div id="end_date" uib-timepicker ng-model="tarea.end_date" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidad">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad" ng-model="tarea.quantity"  required>
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" >
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="text-left">Nombre</th>
+                    <th class="text-left">Hora de Inicio</th>
+                    <th class="text-left">Hora de Fin</th>
+                    <th class="text-left">Empleado</th>
+                    <th class="text-left">Cantidad</th>
+                    <th class="text-left">Acciones</th>
+
+                </tr>
+                </thead>
+                <tbody class="table-hover">
+                <tr ng-repeat="tarea in tareas">
+                    <td class="text-left">
+                        {{tarea.name}}
+                    </td>
+                    <td class="text-left">
+                        {{tarea.init_date}}
+                    </td>
+                    <td class="text-left">
+                        {{tarea.end_date}}
+                    </td>
+                    <td class="text-left">
+                        {{tarea.employee}}
+                    </td>
+                    <td class="text-left">
+                        {{tarea.quantity}}
+                    </td>
+                    <td class="text-left">
+                        <button ng-click="borra(tarea)">Borrar</button>
+                    </td>
+
+                </tr>
+                </tbody>
+               </table>
+
+
+        </div>
+    </div>
+</div>

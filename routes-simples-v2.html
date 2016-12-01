@@ -36,13 +36,18 @@
                     .when('/contact', {
                         templateUrl : 'pages/contact.html',
                         controller  : 'contactController'
+                    })
+                    .otherwise({
+                        redirectTo: '/'
                     });
             });
 
             // create the controller and inject Angular's $scope
-            scotchApp.controller('mainController', function($scope) {
+            scotchApp.controller('mainController',
+                function($scope) {
                 // create a message to display in our view
                 $scope.message = 'Everyone come and see how good I look!';
+                $scope.dato="otro dato";
             });
 
             scotchApp.controller('aboutController', function($scope) {
@@ -67,7 +72,7 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="#/"><i class="fa fa-home"></i> Home</a></li>
             <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
             <li><a href="#contact"><i class="fa fa-comment"></i> Contact</a></li>
         </ul>
